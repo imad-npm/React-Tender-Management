@@ -127,7 +127,6 @@ const TenderTable: React.FC = () => {
                       />
                       <div>
                         <p className="text-sm font-medium text-gray-900">{tender.responsibleMember.name}</p>
-                        <p className="text-xs text-gray-600">{tender.responsibleMember.role}</p>
                       </div>
                     </div>
                   </td>

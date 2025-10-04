@@ -28,7 +28,7 @@ interface TenderState {
   // Actions
   setFilters: (filters: Filters) => void;
   sendMessage: (tenderId: string, message: string) => void;
-  changeTenderStage: (tenderId: string, newStage: TenderStage, action: string) => void;
+  changeTenderStage: (tenderId: string, newStage: TenderStage, action: string, responsibleMember: User) => void;
   setSelectedTenderForPreview: (tender: Tender | null) => void;
   setSelectedTenderForChat: (tender: Tender | null) => void;
   setSelectedTenderForAction: (tender: Tender | null) => void;
@@ -70,12 +70,12 @@ export const useTenderStore = create<TenderState>((set, get) => ({
     set(state => ({ chatMessages: [...state.chatMessages, newMessage] }));
   },
 
-  changeTenderStage: (tenderId, newStage, action) => {
-    // Update tender stage
+  changeTenderStage: (tenderId, newStage, action, responsibleMember) => {
+    // Update tender stage and responsible member
     set(state => ({
       tenders: state.tenders.map(tender =>
         tender.id === tenderId
-          ? { ...tender, stage: newStage, updatedAt: new Date().toISOString() }
+          ? { ...tender, stage: newStage, responsibleMember, updatedAt: new Date().toISOString() }
           : tender
       )
     }));
@@ -86,7 +86,7 @@ export const useTenderStore = create<TenderState>((set, get) => ({
       userId: 'system',
       userName: 'System',
       userAvatar: '', // No avatar for system messages
-      message: `Tender stage changed to "${newStage}" via action: "${action}".`,
+      message: `Tender stage changed to "${newStage}" via action: "${action}". Assigned to ${responsibleMember.name}.`,
       timestamp: new Date().toISOString(),
       tenderId
     };

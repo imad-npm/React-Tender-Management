@@ -44,67 +44,44 @@ export const stageConfig: Record<TenderStage, StageDefinition> = {
     icon: CreditCard,
     description: 'Awaiting payment processing',
     actions: [
-      { action: 'paid', label: 'Mark as Paid', nextStage: 'document-paid', color: 'bg-green-600 hover:bg-green-700', icon: CheckCircle, iconColor: 'text-green-600' },
+      { action: 'paid', label: 'Paid', nextStage: 'pending-preparing-proposals', color: 'bg-green-600 hover:bg-green-700', icon: CheckCircle, iconColor: 'text-green-600' },
       { action: 'cancel', label: 'Cancel', nextStage: 'canceled', color: 'bg-red-600 hover:bg-red-700', icon: XCircle, iconColor: 'text-red-600', isDestructive: true },
     ],
   },
-  'document-paid': {
-    label: 'Document Paid',
-    color: 'border-emerald-200',
-    bgColor: 'bg-emerald-50',
-    textColor: 'text-emerald-700',
-    icon: CheckCircle,
-    description: 'Payment completed, ready to proceed',
+  'pending-preparing-proposals': {
+    label: 'Pending Preparing Proposals',
+    color: 'border-orange-200',
+    bgColor: 'bg-orange-50',
+    textColor: 'text-orange-700',
+    icon: Clock,
+    description: 'Ready to start preparing proposals',
     actions: [
-      { action: 'prepare-technical', label: 'Prepare Technical', nextStage: 'preparing-technical', color: 'bg-blue-600 hover:bg-blue-700', icon: Edit3, iconColor: 'text-blue-600' },
-      { action: 'prepare-financial', label: 'Prepare Financial', nextStage: 'preparing-financial', color: 'bg-purple-600 hover:bg-purple-700', icon: Edit3, iconColor: 'text-purple-600' },
+      { action: 'start-preparing', label: 'Start Preparing', nextStage: 'preparing-proposals', color: 'bg-blue-600 hover:bg-blue-700', icon: Edit3, iconColor: 'text-blue-600' },
       { action: 'cancel', label: 'Cancel', nextStage: 'canceled', color: 'bg-red-600 hover:bg-red-700', icon: XCircle, iconColor: 'text-red-600', isDestructive: true },
     ],
   },
-  'preparing-technical': {
-    label: 'Preparing Technical',
+  'preparing-proposals': {
+    label: 'Preparing Proposals',
     color: 'border-indigo-200',
     bgColor: 'bg-indigo-50',
     textColor: 'text-indigo-700',
     icon: Edit3,
-    description: 'Technical proposal in preparation',
+    description: 'Proposals in preparation',
     actions: [
-      { action: 'done-technical', label: 'Technical Complete', nextStage: 'reviewing-technical', color: 'bg-green-600 hover:bg-green-700', icon: CheckCircle, iconColor: 'text-green-600' },
+      { action: 'finished-preparing', label: 'Finished Preparing', nextStage: 'reviewing-proposals', color: 'bg-green-600 hover:bg-green-700', icon: CheckCircle, iconColor: 'text-green-600' },
+      { action: 'cancel', label: 'Cancel', nextStage: 'canceled', color: 'bg-red-600 hover:bg-red-700', icon: XCircle, iconColor: 'text-red-600', isDestructive: true },
     ],
   },
-  'preparing-financial': {
-    label: 'Preparing Financial',
-    color: 'border-purple-200',
-    bgColor: 'bg-purple-50',
-    textColor: 'text-purple-700',
-    icon: Edit3,
-    description: 'Financial proposal in preparation',
-    actions: [
-      { action: 'done-financial', label: 'Financial Complete', nextStage: 'reviewing-financial', color: 'bg-green-600 hover:bg-green-700', icon: CheckCircle, iconColor: 'text-green-600' },
-    ],
-  },
-  'reviewing-technical': {
-    label: 'Reviewing Technical',
+  'reviewing-proposals': {
+    label: 'Reviewing Proposals',
     color: 'border-cyan-200',
     bgColor: 'bg-cyan-50',
     textColor: 'text-cyan-700',
     icon: Eye,
-    description: 'Technical proposal under review',
+    description: 'Proposals under review',
     actions: [
-      { action: 'accept-technical', label: 'Accept Technical', nextStage: 'pending-submitting', color: 'bg-green-600 hover:bg-green-700', icon: CheckCircle, iconColor: 'text-green-600' },
-      { action: 'reject-technical', label: 'Reject Technical', nextStage: 'preparing-technical', color: 'bg-orange-600 hover:bg-orange-700', icon: AlertTriangle, iconColor: 'text-orange-600', isDestructive: true },
-    ],
-  },
-  'reviewing-financial': {
-    label: 'Reviewing Financial',
-    color: 'border-teal-200',
-    bgColor: 'bg-teal-50',
-    textColor: 'text-teal-700',
-    icon: Eye,
-    description: 'Financial proposal under review',
-    actions: [
-      { action: 'accept-financial', label: 'Accept Financial', nextStage: 'pending-submitting', color: 'bg-green-600 hover:bg-green-700', icon: CheckCircle, iconColor: 'text-green-600' },
-      { action: 'reject-financial', label: 'Reject Financial', nextStage: 'preparing-financial', color: 'bg-orange-600 hover:bg-orange-700', icon: AlertTriangle, iconColor: 'text-orange-600', isDestructive: true },
+      { action: 'accept', label: 'Accept', nextStage: 'pending-submitting', color: 'bg-green-600 hover:bg-green-700', icon: CheckCircle, iconColor: 'text-green-600' },
+      { action: 'reject', label: 'Reject', nextStage: 'preparing-proposals', color: 'bg-orange-600 hover:bg-orange-700', icon: AlertTriangle, iconColor: 'text-orange-600', isDestructive: true },
     ],
   },
   'pending-submitting': {
@@ -115,7 +92,8 @@ export const stageConfig: Record<TenderStage, StageDefinition> = {
     icon: Clock,
     description: 'Ready for submission',
     actions: [
-      { action: 'submit', label: 'Submit Proposal', nextStage: 'submitted', color: 'bg-blue-600 hover:bg-blue-700', icon: Send, iconColor: 'text-blue-600' },
+      { action: 'submit', label: 'Submit', nextStage: 'submitted', color: 'bg-blue-600 hover:bg-blue-700', icon: Send, iconColor: 'text-blue-600' },
+      { action: 'cancel', label: 'Cancel', nextStage: 'canceled', color: 'bg-red-600 hover:bg-red-700', icon: XCircle, iconColor: 'text-red-600', isDestructive: true },
     ],
   },
   'submitted': {
@@ -126,8 +104,8 @@ export const stageConfig: Record<TenderStage, StageDefinition> = {
     icon: Send,
     description: 'Proposal submitted, awaiting results',
     actions: [
-      { action: 'won', label: 'Mark as Won', nextStage: 'won', color: 'bg-green-600 hover:bg-green-700', icon: Trophy, iconColor: 'text-green-600' },
-      { action: 'lost', label: 'Mark as Lost', nextStage: 'lost', color: 'bg-red-600 hover:bg-red-700', icon: XCircle, iconColor: 'text-red-600', isDestructive: true },
+      { action: 'won', label: 'Won', nextStage: 'won', color: 'bg-green-600 hover:bg-green-700', icon: Trophy, iconColor: 'text-green-600' },
+      { action: 'lost', label: 'Lost', nextStage: 'lost', color: 'bg-red-600 hover:bg-red-700', icon: XCircle, iconColor: 'text-red-600', isDestructive: true },
     ],
   },
   'won': {
@@ -180,11 +158,9 @@ export const priorityConfig = {
 export const stageOrder: TenderStage[] = [
   'under-preview',
   'payment-pending',
-  'document-paid',
-  'preparing-technical',
-  'preparing-financial',
-  'reviewing-technical',
-  'reviewing-financial',
+  'pending-preparing-proposals',
+  'preparing-proposals',
+  'reviewing-proposals',
   'pending-submitting',
   'submitted',
   'won',

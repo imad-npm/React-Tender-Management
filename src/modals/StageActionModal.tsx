@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, ArrowRight, AlertTriangle, CheckCircle, Users } from 'lucide-react';
-import { Tender, TenderStage, User } from '../types/tender';
+import { Tender, TenderStage } from '../types/tender';
 import { stageConfig } from '../utils/stageConfig';
 import { useTenderStore } from '../store/tenderStore';
 
@@ -59,7 +59,7 @@ const StageActionModal: React.FC<StageActionModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center z-50">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center py-5 z-50">
       <div className="bg-white rounded-2xl shadow-2xl w-full overflow-scroll max-w-md">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
@@ -86,23 +86,7 @@ const StageActionModal: React.FC<StageActionModalProps> = ({
             </div>
           </div>
 
-          {/* Responsible Member Selection */}
-          <div className="mb-6">
-            <h3 className="text-sm font-medium text-gray-700 mb-2">Assign Responsible Member</h3>
-            <div className="relative">
-              <Users className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <select
-                value={selectedUser}
-                onChange={(e) => setSelectedUser(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-              >
-                <option value="" disabled>Select a user</option>
-                {availableUsers.map(user => (
-                  <option key={user.id} value={user.id}>{user.name}</option>
-                ))}
-              </select>
-            </div>
-          </div>
+    
 
           {/* Available Actions */}
           {availableActions.length > 0 ? (
@@ -129,7 +113,25 @@ const StageActionModal: React.FC<StageActionModalProps> = ({
                         {nextStageConfig.label}
                       </div>
                     </div>
-
+                          {/* Responsible Member Selection */
+                          (! ["no-go","reject","cancel"].includes(actionItem.action)) &&
+          <div className="mb-6">
+            <h3 className="text-sm font-medium text-gray-700 mb-2">Assign Responsible Member</h3>
+            <div className="relative">
+              <Users className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <select
+                value={selectedUser}
+                onChange={(e) => setSelectedUser(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="" disabled>Select a user</option>
+                {availableUsers.map(user => (
+                  <option key={user.id} value={user.id}>{user.name}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+              }
                     <p className="text-sm text-gray-600 mb-3">
                       {getActionDescription(actionItem.nextStage)}
                     </p>

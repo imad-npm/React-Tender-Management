@@ -40,25 +40,25 @@ const ChatPanel: React.FC<ChatPanelProps> = ({
   };
 
   return (
-    <div className={`fixed right-0 top-0 h-full w-96 bg-white shadow-2xl transform transition-transform duration-300 z-50 ${
+    <div className={`fixed right-0 top-0 h-full w-96  bg-white shadow-2xl transform transition-transform duration-300 z-50 ${
       isOpen ? 'translate-x-0' : 'translate-x-full'
     }`}>
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-blue-600 to-indigo-600">
-        <div className="text-white">
+      <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-cyan-50 to-cyan-50">
+        <div className="text-cyan-700">
           <h3 className="font-semibold text-lg">{tender.tenderName}</h3>
-          <p className="text-blue-100 text-sm">{tender.referenceNumber}</p>
+          <p className=" text-sm">{tender.referenceNumber}</p>
         </div>
         <button
           onClick={onClose}
-          className="p-2 text-white hover:bg-white hover:bg-opacity-20 rounded-lg transition-colors"
+          className="p-2 text-cyan-700 hover:bg-white hover:bg-opacity-20 rounded-lg transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 h-[calc(100vh-140px)]">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 h-[calc(100vh-150px)]">
         {tenderMessages.length === 0 ? (
           <div className="text-center text-gray-500 mt-8">
             <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -89,7 +89,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({
       </div>
 
       {/* Message Input */}
-      <div className="p-4 border-t border-gray-200 bg-gray-50">
+      <div className="px-4 py-2 border-t border-gray-200 bg-gray-50">
         <div className="flex items-center gap-2 bg-white rounded-lg border border-gray-200 p-2">
           <input
             type="text"
@@ -108,7 +108,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({
             </button>
             <button
               onClick={handleSend}
-              className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="p-2 bg-cyan-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={!newMessage.trim()}
             >
               <Send className="w-4 h-4" />

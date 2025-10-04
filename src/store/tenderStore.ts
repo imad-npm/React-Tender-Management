@@ -79,18 +79,6 @@ export const useTenderStore = create<TenderState>((set, get) => ({
           : tender
       )
     }));
-
-    // Add a system message to chat
-    const systemMessage: ChatMessage = {
-      id: Date.now().toString(),
-      userId: 'system',
-      userName: 'System',
-      userAvatar: '', // No avatar for system messages
-      message: `Tender stage changed to "${newStage}" via action: "${action}". Assigned to ${responsibleMember.name}.`,
-      timestamp: new Date().toISOString(),
-      tenderId
-    };
-    set(state => ({ chatMessages: [...state.chatMessages, systemMessage] }));
   },
 
   setSelectedTenderForPreview: (tender) => set({ selectedTenderForPreview: tender }),

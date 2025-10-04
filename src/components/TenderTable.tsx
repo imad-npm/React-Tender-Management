@@ -1,21 +1,17 @@
 import React from 'react';
 import { Eye, FileText, MessageCircle, Calendar, DollarSign, Building, ArrowRight } from 'lucide-react';
-import { Tender } from '../types/tender';
 import { stageConfig, priorityConfig } from '../utils/stageConfig';
 import { useTenderStore, useFilteredTenders } from '../store/tenderStore';
 import DocumentPreviewModal from '../modals/DocumentPreviewModal';
 import ChatPanel from '../modals/ChatPanel';
 import StageActionModal from '../modals/StageActionModal';
-  import { formatCurrency, formatDate } from '../utils/formatters';
+import { formatCurrency } from '../utils/formatters';
 
 const TenderTable: React.FC = () => {
   const {
     selectedTenderForPreview,
     selectedTenderForChat,
     selectedTenderForAction,
-    chatMessages,
-    sendMessage,
-    changeTenderStage,
     setSelectedTenderForPreview,
     setSelectedTenderForChat,
     setSelectedTenderForAction,
@@ -81,8 +77,8 @@ const TenderTable: React.FC = () => {
 
                   {/* Stage */}
                   <td className="py-4 px-6">
-                    <div className="flex items-center  gap-2">
-                      <div className={`flex w-44 items-center justify-center gap-2 px-3  py-2 rounded-full text-sm font-medium border ${stageInfo.color} ${stageInfo.bgColor} ${stageInfo.textColor}`}>
+                    <div className="flex items-center justify-center  gap-2">
+                      <div className={`flex items-center w-48 min-w-32 justify-center gap-2 px-3  py-2 rounded-full text-sm font-medium border ${stageInfo.color} ${stageInfo.bgColor} ${stageInfo.textColor}`}>
                         <StageIcon className="w-4 h-4" />
                         {stageInfo.label}
                       </div>
@@ -134,13 +130,7 @@ const TenderTable: React.FC = () => {
                   {/* Actions */}
                   <td className="py-4 px-6">
                     <div className="flex items-center justify-center gap-2">
-                      <button
-                        onClick={() => onDocumentPreview(tender)}
-                        className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                        title="Preview Documents"
-                      >
-                        <Eye className="w-4 h-4" />
-                      </button>
+                     
                       <button
                         onClick={() => onOpenChat(tender)}
                         className="p-2 text-gray-600 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
@@ -185,15 +175,12 @@ const TenderTable: React.FC = () => {
         tender={selectedTenderForChat}
         isOpen={!!selectedTenderForChat}
         onClose={() => setSelectedTenderForChat(null)}
-        messages={chatMessages}
-        onSendMessage={sendMessage}
       />
 
       <StageActionModal
         tender={selectedTenderForAction}
         isOpen={!!selectedTenderForAction}
         onClose={() => setSelectedTenderForAction(null)}
-        onStageChange={changeTenderStage}
       />
     </div>
   );

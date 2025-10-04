@@ -1,33 +1,25 @@
+import { Routes, Route } from 'react-router-dom';
 import { Building2 } from 'lucide-react';
-import KPICards from './components/KPICards';
-import FilterBar from './components/FilterBar';
-import TenderTable from './components/TenderTable';
 import DocumentPreviewModal from './components/DocumentPreviewModal';
 import ChatPanel from './components/ChatPanel';
 import StageActionModal from './components/StageActionModal';
-import { useTenderStore, useFilteredTenders } from './store/tenderStore';
+import { useTenderStore } from './store/tenderStore';
+import NavigationBar from './components/NavigationBar';
+import TenderListPage from './pages/TenderListPage';
+import PipelinePage from './pages/PipelinePage';
 
 function App() {
-  // Get state and actions from the Zustand store
   const {
-    kpiData,
-    filters,
-    availableTags,
-    availableUsers,
     selectedTenderForPreview,
     selectedTenderForChat,
     selectedTenderForAction,
     chatMessages,
-    setFilters,
     sendMessage,
     changeTenderStage,
     setSelectedTenderForPreview,
     setSelectedTenderForChat,
     setSelectedTenderForAction,
   } = useTenderStore();
-
-  // Get the derived/computed filtered tenders
-  const filteredTenders = useFilteredTenders();
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -46,26 +38,15 @@ function App() {
         </div>
       </header>
 
+      {/* Navigation */}
+      <NavigationBar />
+
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* KPI Cards */}
-        <KPICards data={kpiData} />
-
-        {/* Filters */}
-        <FilterBar
-          filters={filters}
-          onFiltersChange={setFilters}
-          availableTags={availableTags}
-          availableUsers={availableUsers.map(u => u.id)}
-        />
-
-        {/* Tender Table */}
-        <TenderTable
-          tenders={filteredTenders}
-          onDocumentPreview={setSelectedTenderForPreview}
-          onOpenChat={setSelectedTenderForChat}
-          onStageAction={setSelectedTenderForAction}
-        />
+        <Routes>
+          <Route path="/" element={<TenderListPage />} />
+          <Route path="/pipeline" element={<PipelinePage />} />
+        </Routes>
       </main>
 
       {/* Modals and Panels */}

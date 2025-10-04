@@ -3,8 +3,8 @@ import { Search, Filter, X, ChevronDown } from 'lucide-react';
 import { Filters, TenderStage, Priority } from '../types/tender';
 import { stageConfig, priorityConfig } from '../utils/stageConfig';
 import { useTenderStore } from '../store/tenderStore';
-import MultiSelectFilter from './MultiSelectFilter';
-import DatePicker from './DatePicker';
+import MultiSelectFilter from '../ui/MultiSelectFilter';
+import DatePicker from '../ui/DatePicker';
 
 const FilterBar: React.FC = () => {
   const {

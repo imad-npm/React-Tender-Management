@@ -3,7 +3,7 @@ import { X, ArrowRight, AlertTriangle, CheckCircle, Users } from 'lucide-react';
 import { Tender, TenderStage } from '../types/tender';
 import { stageConfig } from '../utils/stageConfig';
 import { useTenderStore } from '../store/tenderStore';
-import NativeSelect from '../components/NativeSelect';
+import NativeSelect from '../ui/NativeSelect';
 
 interface StageActionModalProps {
   tender: Tender | null;

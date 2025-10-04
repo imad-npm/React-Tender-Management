@@ -103,10 +103,7 @@ export const stageConfig: Record<TenderStage, StageDefinition> = {
     textColor: 'text-blue-700',
     icon: Send,
     description: 'Proposal submitted, awaiting results',
-    actions: [
-      { action: 'won', label: 'Won', nextStage: 'won', color: 'bg-green-600 hover:bg-green-700', icon: Trophy, iconColor: 'text-green-600' },
-      { action: 'lost', label: 'Lost', nextStage: 'lost', color: 'bg-red-600 hover:bg-red-700', icon: XCircle, iconColor: 'text-red-600', isDestructive: true },
-    ],
+    actions: [],
   },
   'won': {
     label: 'Won',

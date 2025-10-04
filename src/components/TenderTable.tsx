@@ -3,9 +3,19 @@ import { Eye, FileText, MessageCircle, Calendar, DollarSign, Building, ArrowRigh
 import { Tender } from '../types/tender';
 import { stageConfig, priorityConfig } from '../utils/stageConfig';
 import { useTenderStore, useFilteredTenders } from '../store/tenderStore';
+import DocumentPreviewModal from '../modals/DocumentPreviewModal';
+import ChatPanel from '../modals/ChatPanel';
+import StageActionModal from '../modals/StageActionModal';
+  import { formatCurrency, formatDate } from '../utils/formatters';
 
 const TenderTable: React.FC = () => {
   const {
+    selectedTenderForPreview,
+    selectedTenderForChat,
+    selectedTenderForAction,
+    chatMessages,
+    sendMessage,
+    changeTenderStage,
     setSelectedTenderForPreview,
     setSelectedTenderForChat,
     setSelectedTenderForAction,
@@ -16,20 +26,6 @@ const TenderTable: React.FC = () => {
   const onOpenChat = setSelectedTenderForChat;
   const onStageAction = setSelectedTenderForAction;
 
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    }).format(amount);
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
-    });
-  };
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
@@ -58,7 +54,7 @@ const TenderTable: React.FC = () => {
                   <td className="py-4 px-6">
                     <div className="space-y-2">
                       <h3 className="font-semibold text-gray-900 text-base">{tender.tenderName}</h3>
-                      <div className="flex items-center gap-4 text-sm text-gray-600">
+                      <div className="flex flex-col gap-2 text-sm text-gray-600">
                         <div className="flex items-center gap-1">
                           <Building className="w-4 h-4" />
                           <span>{tender.agencyName}</span>
@@ -85,20 +81,12 @@ const TenderTable: React.FC = () => {
 
                   {/* Stage */}
                   <td className="py-4 px-6">
-                    <div className="flex items-center gap-2">
-                      <div className={`inline-flex items-center gap-2 px-3 py-2 rounded-full text-sm font-medium border ${stageInfo.color} ${stageInfo.bgColor} ${stageInfo.textColor}`}>
+                    <div className="flex items-center  gap-2">
+                      <div className={`flex w-44 items-center justify-center gap-2 px-3  py-2 rounded-full text-sm font-medium border ${stageInfo.color} ${stageInfo.bgColor} ${stageInfo.textColor}`}>
                         <StageIcon className="w-4 h-4" />
                         {stageInfo.label}
                       </div>
-                      {availableActionsCount > 0 && (
-                        <button
-                          onClick={() => onStageAction(tender)}
-                          className="p-1 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
-                          title={`${availableActionsCount} action${availableActionsCount > 1 ? 's' : ''} available`}
-                        >
-                          <ArrowRight className="w-4 h-4" />
-                        </button>
-                      )}
+                    
                     </div>
                   </td>
 
@@ -186,6 +174,28 @@ const TenderTable: React.FC = () => {
           <p className="text-gray-600">Try adjusting your filters to see more results.</p>
         </div>
       )}
+
+      {/* Modals and Panels */}
+      <DocumentPreviewModal
+        tender={selectedTenderForPreview}
+        isOpen={!!selectedTenderForPreview}
+        onClose={() => setSelectedTenderForPreview(null)}
+      />
+
+      <ChatPanel
+        tender={selectedTenderForChat}
+        isOpen={!!selectedTenderForChat}
+        onClose={() => setSelectedTenderForChat(null)}
+        messages={chatMessages}
+        onSendMessage={sendMessage}
+      />
+
+      <StageActionModal
+        tender={selectedTenderForAction}
+        isOpen={!!selectedTenderForAction}
+        onClose={() => setSelectedTenderForAction(null)}
+        onStageChange={changeTenderStage}
+      />
     </div>
   );
 };

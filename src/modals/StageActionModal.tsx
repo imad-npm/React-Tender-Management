@@ -82,7 +82,7 @@ const StageActionModal: React.FC<StageActionModalProps> = ({
                   <div key={actionItem.action} className="border border-gray-200 rounded-lg p-4">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
-                        <ActionIcon className="w-4 h-4" />
+                        <ActionIcon className={`w-4 h-4 ${actionItem.iconColor}`} />
                         <span className="font-medium text-gray-900">{actionItem.label}</span>
                       </div>
                       <ArrowRight className="w-4 h-4 text-gray-400" />

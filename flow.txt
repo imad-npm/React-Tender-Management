@@ -1,0 +1,125 @@
+Those notes are a step-by-step guide for how a tender should be handled
+  in the app.
+
+  Think of it as a "game plan":
+
+
+   * Each Stage (like Under Preview) is a step in the process.
+   * Each action (like Go/No-Go) is a decision you can make at that step.
+   * The notes tell you exactly where the tender goes next based on your
+     decision.
+
+  For example: At the "Under Preview" step, if you decide "GO," the
+  tender moves to the "Payment Pending" step.
+
+
+  In short, the notes are the rules for moving a tender through its
+  lifecycle within the app.
+
+> so wths the point of this app , who wil use it
+
+✦ The point of the app is to help a business win more contracts.
+
+  It takes the complicated, multi-step process of bidding for a tender and
+   makes it simple and organized. It ensures the team follows the correct
+  steps (like the ones in the notes), doesn't miss deadlines, and can
+  easily work together.
+
+
+  Who will use it?
+
+  The employees of a company that bids on tenders, such as:
+
+
+   * Managers who decide which projects to bid on.
+   * *   Managers** who decide which projects to bid on.
+   * Technical and financial experts who write the proposals.
+   * Team leaders who review the bids and track the company's win/loss
+     record.
+
+> rexplain the notes
+
+✦ Of course. Let's walk through the journey of a single tender according
+  to those notes.
+
+  Think of the notes as a flowchart or a "choose your own adventure" story
+   for a business proposal.
+
+
+  Step 1: A New Opportunity
+   * Stage: Under Preview
+   * Meaning: Your team has found a new tender. The first decision is
+     whether to even try to win it.
+   * Actions:
+       * If you decide "Go" (you want to compete), the tender moves to
+         Payment Pending.
+       * If you decide "No-Go" (it's not a good fit), the tender is marked
+          as Cancelled.
+
+
+  Step 2: Paying the Entry Fee
+   * Stage: Payment Pending
+   * Meaning: Many tenders require a fee to get the official documents.
+     This is the reminder to pay it.
+   * Actions:
+       * Once you've "Paid", the tender moves to Pending Preparing 
+         Proposals.
+       * If you change your mind, you can "Cancel" it.
+
+
+  Step 3: Getting Ready to Work
+   * Stage: Pending Preparing Proposals
+   * Meaning: You've paid the fee and are ready to begin the actual work
+     of writing the proposal.
+   * Actions:
+       * When the team is ready, they "Start Preparing", and the tender
+         moves to Preparing Proposals.
+       * Or, you can still "Cancel".
+
+
+  Step 4: Writing the Proposal
+   * Stage: Preparing Proposals
+   * Meaning: The team is actively writing the technical and financial
+     documents for the bid.
+   * Actions:
+       * When the draft is done, you mark it as "Finished Preparing 
+         Proposals", and it moves to Reviewing Proposals for an internal
+         check.
+       * Or, you can "Cancel".
+
+
+  Step 5: Internal Review
+   * Stage: Reviewing Proposal
+   * Meaning: Before sending the proposal to the client, your own team
+     leaders review it for quality.
+   * Actions:
+       * If they "Accept" it, the proposal is approved and moves to
+         Pending Submitting.
+       * If they "Reject" it (e.g., they find errors), it goes back to the
+          Preparing Proposals stage to be fixed.
+
+
+  Step 6: Ready to Send
+   * Stage: Pending Submitting
+   * Meaning: The proposal is approved and ready to be sent off.
+   * Actions:
+       * When you officially "Submit" it, the tender moves to the
+         Submitted stage.
+       * If you decide not to submit at the last minute, you can "Cancel".
+
+
+  Step 7: Waiting for the Result
+   * Stage: Submitted
+   * Meaning: You have submitted your bid and are waiting for the client
+     to make their decision.
+   * Final Outcomes: From here, the tender will eventually be marked as
+     `Won` or `Lost`.
+
+  The `Cancelled` stage is a final state for any tender dropped during
+  the process.
+
+
+  So, the notes are simply the precise, step-by-step path that every
+  tender follows within the application.
+
+

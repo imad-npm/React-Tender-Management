@@ -3,13 +3,15 @@ import { Search, Filter, X, ChevronDown } from 'lucide-react';
 import { Filters, TenderStage, Priority } from '../types/tender';
 import { stageConfig, priorityConfig } from '../utils/stageConfig';
 import { useTenderStore } from '../store/tenderStore';
+import MultiSelectFilter from './MultiSelectFilter';
+import DatePicker from './DatePicker';
 
 const FilterBar: React.FC = () => {
   const {
     filters,
     setFilters,
     availableTags,
-    // availableUsers, // This is the full user object, we only need the id
+    availableUsers,
   } = useTenderStore();
 
   const [showAdvancedFilters, setShowAdvancedFilters] = React.useState(false);
@@ -37,6 +39,34 @@ const FilterBar: React.FC = () => {
     filters.tags.length > 0 ||
     filters.dateRange.start ||
     filters.dateRange.end;
+
+  const stageOptions = (Object.keys(stageConfig) as TenderStage[]).map(stage => ({
+    value: stage,
+    label: stageConfig[stage].label,
+    color: stageConfig[stage].color,
+    bgColor: stageConfig[stage].bgColor,
+    textColor: stageConfig[stage].textColor,
+  }));
+
+  const priorityOptions = (Object.keys(priorityConfig) as Priority[]).map(priority => ({
+    value: priority,
+    label: priorityConfig[priority].label,
+    color: priorityConfig[priority].color,
+    dotColor: priorityConfig[priority].dotColor,
+  }));
+
+  const tagOptions = availableTags.map(tag => ({
+    value: tag,
+    label: tag,
+    bgColor: 'bg-blue-100',
+    textColor: 'text-blue-800',
+    color: 'border-blue-200',
+  }));
+
+  const userOptions = availableUsers.map(user => ({
+    value: user.id,
+    label: user.name,
+  }));
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
@@ -79,112 +109,46 @@ const FilterBar: React.FC = () => {
       {/* Advanced Filters */}
       {showAdvancedFilters && (
         <div className="mt-6 pt-6 border-t border-gray-100 space-y-4">
-          {/* Stage Filters */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Stages</label>
-            <div className="flex flex-wrap gap-2">
-              {(Object.keys(stageConfig) as TenderStage[]).map((stage) => {
-                const config = stageConfig[stage];
-                const isSelected = filters.stages.includes(stage);
-                return (
-                  <button
-                    key={stage}
-                    onClick={() => {
-                      const newStages = isSelected
-                        ? filters.stages.filter(s => s !== stage)
-                        : [...filters.stages, stage];
-                      updateFilters('stages', newStages);
-                    }}
-                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      isSelected
-                        ? `${config.bgColor} ${config.textColor} border ${config.color}`
-                        : 'bg-gray-50 text-gray-600 hover:bg-gray-100 border border-gray-200'
-                    }`}
-                  >
-                    {config.label}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
+          <MultiSelectFilter
+            label="Stages"
+            options={stageOptions}
+            selectedValues={filters.stages}
+            onChange={(values) => updateFilters('stages', values as TenderStage[])}
+          />
 
-          {/* Priority Filters */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Priority</label>
-            <div className="flex gap-2">
-              {(Object.keys(priorityConfig) as Priority[]).map((priority) => {
-                const config = priorityConfig[priority];
-                const isSelected = filters.priorities.includes(priority);
-                return (
-                  <button
-                    key={priority}
-                    onClick={() => {
-                      const newPriorities = isSelected
-                        ? filters.priorities.filter(p => p !== priority)
-                        : [...filters.priorities, priority];
-                      updateFilters('priorities', newPriorities);
-                    }}
-                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      isSelected
-                        ? config.color
-                        : 'bg-gray-50 text-gray-600 hover:bg-gray-100 border border-gray-200'
-                    }`}
-                  >
-                    {config.label}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
+          <MultiSelectFilter
+            label="Priority"
+            options={priorityOptions}
+            selectedValues={filters.priorities}
+            onChange={(values) => updateFilters('priorities', values as Priority[])}
+          />
 
-          {/* Tags Filters */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Tags</label>
-            <div className="flex flex-wrap gap-2">
-              {availableTags.map((tag) => {
-                const isSelected = filters.tags.includes(tag);
-                return (
-                  <button
-                    key={tag}
-                    onClick={() => {
-                      const newTags = isSelected
-                        ? filters.tags.filter(t => t !== tag)
-                        : [...filters.tags, tag];
-                      updateFilters('tags', newTags);
-                    }}
-                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      isSelected
-                        ? 'bg-blue-100 text-blue-800 border border-blue-200'
-                        : 'bg-gray-50 text-gray-600 hover:bg-gray-100 border border-gray-200'
-                    }`}
-                  >
-                    {tag}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
+          <MultiSelectFilter
+            label="Tags"
+            options={tagOptions}
+            selectedValues={filters.tags}
+            onChange={(values) => updateFilters('tags', values)}
+          />
+
+          <MultiSelectFilter
+            label="Responsible Member"
+            options={userOptions}
+            selectedValues={filters.users}
+            onChange={(values) => updateFilters('users', values)}
+          />
 
           {/* Date Range */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
-              <input
-                type="date"
-                className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                value={filters.dateRange.start}
-                onChange={(e) => updateFilters('dateRange', { ...filters.dateRange, start: e.target.value })}
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">End Date</label>
-              <input
-                type="date"
-                className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                value={filters.dateRange.end}
-                onChange={(e) => updateFilters('dateRange', { ...filters.dateRange, end: e.target.value })}
-              />
-            </div>
+            <DatePicker
+              label="Start Date"
+              value={filters.dateRange.start}
+              onChange={(value) => updateFilters('dateRange', { ...filters.dateRange, start: value })}
+            />
+            <DatePicker
+              label="End Date"
+              value={filters.dateRange.end}
+              onChange={(value) => updateFilters('dateRange', { ...filters.dateRange, end: value })}
+            />
           </div>
         </div>
       )}

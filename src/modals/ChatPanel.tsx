@@ -3,6 +3,7 @@ import { X, Send, Paperclip, Smile } from 'lucide-react';
 import { Tender } from '../types/tender';
 import { useChatStore } from '../store/chatStore';
 import { ChatPanelProps } from '../types/modals';
+import { formatTime } from '../utils/formatters';
 
 const ChatPanel: React.FC<ChatPanelProps> = ({
   tender,
@@ -27,12 +28,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({
     }
   };
 
-  const formatTime = (timestamp: string) => {
-    return new Date(timestamp).toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
+  
 
   return (
     <div className={`fixed right-0 top-0 h-full w-96  bg-white shadow-2xl transform transition-transform duration-300 z-50 ${

@@ -9,15 +9,15 @@ const PipelineView: React.FC = () => {
         return (
           <div
             key={stage}
-            className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200"
+            className={`bg-white rounded-xl  p-6 shadow-sm  border-l-4 ${stageInfo.color} hover:shadow-md transition-shadow duration-200`}
           >
             <div className="flex items-center mb-4">
-              <div className={`p-3 rounded-lg ${stageInfo.bgColor}`}>
-                <stageInfo.icon className={`w-6 h-6 ${stageInfo.textColor}`} />
+              <div className={`px-3 py-1 rounded-full ${stageInfo.bgColor}`}>
+                 <p className={`text-2xl font-bold ${stageInfo.textColor}`}> {index + 1}</p>
               </div>
               <div className="ml-4">
                 <h3 className="text-lg font-semibold text-gray-900">{stageInfo.label}</h3>
-                <p className="text-sm text-gray-600">Stage {index + 1}</p>
+                  <stageInfo.icon className={`w-6 h-6 ${stageInfo.textColor}`} />
               </div>
             </div>
             <p className="text-sm text-gray-500">{stageInfo.description}</p>

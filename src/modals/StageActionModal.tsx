@@ -37,7 +37,6 @@ const StageActionModal: React.FC<StageActionModalProps> = ({
     setSelectedAction(action);
 
     // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
 
     const responsibleUser = availableUsers.find(u => u.id === selectedUser);
     if (responsibleUser) {

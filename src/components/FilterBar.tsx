@@ -2,20 +2,25 @@ import React from 'react';
 import { Search, Filter, X, ChevronDown } from 'lucide-react';
 import { Filters, TenderStage, Priority } from '../types/tender';
 import { stageConfig, priorityConfig } from '../utils/stageConfig';
-import { useTenderStore } from '../store/tenderStore';
 import NativeSelect from '../ui/NativeSelect';
 import DatePicker from '../ui/DatePicker';
 
-const FilterBar: React.FC = () => {
-  const { filters, setFilters, availableTags, availableUsers } = useTenderStore();
+interface FilterBarProps {
+  filters: Filters;
+  onFiltersChange: (filters: Filters) => void;
+  availableTags: string[];
+  availableUsers: { value: string; label: string }[];
+}
+
+const FilterBar: React.FC<FilterBarProps> = ({ filters, onFiltersChange, availableTags, availableUsers }) => {
   const [showAdvancedFilters, setShowAdvancedFilters] = React.useState(false);
 
   const updateFilters = (key: keyof Filters, value: any) => {
-    setFilters({ ...filters, [key]: value });
+    onFiltersChange({ ...filters, [key]: value });
   };
 
   const clearFilters = () => {
-    setFilters({
+    onFiltersChange({
       search: '',
       stages: [],
       users: [],

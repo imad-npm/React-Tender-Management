@@ -1,11 +1,10 @@
 
-import { Tender, Filters, ChatMessage, TenderStage, KPIData, User } from './tender';
+import { Tender, ChatMessage, TenderStage, KPIData, User } from './tender';
 
 export interface TenderState {
   // State
   tenders: Tender[];
   chatMessages: ChatMessage[];
-  filters: Filters;
   kpiData: KPIData;
   availableTags: string[];
   availableUsers: User[];
@@ -14,7 +13,6 @@ export interface TenderState {
   selectedTenderForAction: Tender | null;
 
   // Actions
-  setFilters: (filters: Filters) => void;
   sendMessage: (tenderId: string, message: string) => void;
   changeTenderStage: (tenderId: string, newStage: TenderStage, action: string, responsibleMember: User) => void;
   setSelectedTenderForPreview: (tender: Tender | null) => void;

@@ -1,14 +1,19 @@
 import React from 'react';
 import { FileText, MessageCircle, Calendar, DollarSign, Building, ArrowRight } from 'lucide-react';
 import { stageConfig, priorityConfig } from '../utils/stageConfig';
-import { useTenderStore, useFilteredTenders } from '../store/tenderStore';
+import { useTenderStore } from '../store/tenderStore';
 import DocumentPreviewModal from '../modals/DocumentPreviewModal';
 import ChatPanel from '../modals/ChatPanel';
 import StageActionModal from '../modals/StageActionModal';
 import { formatCurrency } from '../utils/formatters';
 import CopyableReference from './CopyableReference';
+import { Tender } from '../types/tender';
 
-const TenderTable: React.FC = () => {
+interface TenderTableProps {
+  tenders: Tender[];
+}
+
+const TenderTable: React.FC<TenderTableProps> = ({ tenders }) => {
   const {
     selectedTenderForPreview,
     selectedTenderForChat,
@@ -17,7 +22,6 @@ const TenderTable: React.FC = () => {
     setSelectedTenderForChat,
     setSelectedTenderForAction,
   } = useTenderStore();
-  const tenders = useFilteredTenders();
 
   const onOpenChat = setSelectedTenderForChat;
   const onStageAction = setSelectedTenderForAction;

@@ -6,6 +6,7 @@ import DocumentPreviewModal from '../modals/DocumentPreviewModal';
 import ChatPanel from '../modals/ChatPanel';
 import StageActionModal from '../modals/StageActionModal';
 import { formatCurrency } from '../utils/formatters';
+import CopyableReference from './CopyableReference';
 
 const TenderTable: React.FC = () => {
   const {
@@ -54,9 +55,9 @@ const TenderTable: React.FC = () => {
                           <Building className="w-4 h-4" />
                           <span>{tender.agencyName}</span>
                         </div>
-                        <div className="flex items-center gap-1">
-                          <FileText className="w-4 h-4" />
-                          <span>{tender.referenceNumber}</span>
+                        <div className="">
+                         <CopyableReference referenceNumber={tender.referenceNumber} />
+
                         </div>
                       </div>
                       <div className="flex items-center gap-4 text-sm text-gray-600">

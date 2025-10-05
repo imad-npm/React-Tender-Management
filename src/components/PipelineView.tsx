@@ -40,7 +40,7 @@ const PipelineView: React.FC = () => {
           </div>
           <div className="ml-4">
             <h3 className="text-lg font-semibold text-gray-900">Won / Lost</h3>
-            <div className="flex gap-2">
+            <div className="flex justify-between">
               <Trophy className={`w-6 h-6 text-green-600`} />
               <XCircle className={`w-6 h-6 text-red-600`} />
             </div>

@@ -1,45 +1,24 @@
-import { createApi, BaseQueryFn } from '@reduxjs/toolkit/query/react';
-import { mockDb } from '../utils/mockApiHandlers';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { Tender } from '../types/tender';
 
 enum ApiTag {
   Tags = 'Tags',
 }
 
-const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
-
-type MockQueryArgs = {
-  url: string;
-  method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
-  body?: any;
-};
-
-const mockBaseQuery: BaseQueryFn<MockQueryArgs, unknown, { status: number; data: string }> = async ({ url, method }) => {
-  await delay(500);
-
-  const [resource] = url.split('/').filter(Boolean);
-
-  try {
-    switch (resource) {
-      case 'tags':
-        if (method === 'GET') {
-          return { data: mockDb.tags.getAll() };
-        }
-        break;
-    }
-    return { error: { status: 404, data: 'Resource not found' } };
-  } catch (error) {
-    console.error('Mock API Error:', error);
-    return { error: { status: 500, data: 'Internal Mock Server Error' } };
-  }
-};
-
 export const tagApi = createApi({
   reducerPath: 'tagApi',
-  baseQuery: mockBaseQuery,
+  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:5000/api/' }),
   tagTypes: Object.values(ApiTag),
   endpoints: (builder) => ({
     getAvailableTags: builder.query<string[], void>({
-      query: () => ({ url: 'tags', method: 'GET' }),
+      async queryFn(_arg, _queryApi, _extraOptions, fetchWithBase) {
+        const result = await fetchWithBase('tenders');
+        if (result.error) return { error: result.error };
+        const tenders = result.data as Tender[];
+        const allTags = tenders.flatMap(tender => tender.tags);
+        const uniqueTags = Array.from(new Set(allTags));
+        return { data: uniqueTags };
+      },
       providesTags: [ApiTag.Tags],
     }),
   }),

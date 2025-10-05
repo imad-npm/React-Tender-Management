@@ -1,34 +1,38 @@
 import React, { useState } from 'react';
 import { X, Send, Paperclip, Smile } from 'lucide-react';
 import { Tender } from '../types/tender';
-import { useChatStore } from '../store/chatStore';
 import { ChatPanelProps } from '../types/modals';
 import { formatTime } from '../utils/formatters';
+import { useGetChatMessagesQuery, useSendChatMessageMutation } from '../services/chatApi';
 
 const ChatPanel: React.FC<ChatPanelProps> = ({
   tender,
   isOpen,
   onClose,
 }) => {
-  const {
-    chatMessages,
-    sendMessage,
-  } = useChatStore();
+  const { data: allChatMessages, isLoading } = useGetChatMessagesQuery();
+  const [sendChatMessage] = useSendChatMessageMutation();
 
   const [newMessage, setNewMessage] = useState('');
 
   if (!isOpen || !tender) return null;
 
-  const tenderMessages = chatMessages.filter(msg => msg.tenderId === tender.id);
+  const tenderMessages = allChatMessages?.filter(msg => msg.tenderId === tender.id) || [];
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (newMessage.trim()) {
-      sendMessage(tender.id, newMessage);
+      const messageToSend = {
+        userId: 'current_user_id', // Placeholder
+        userName: 'Current User', // Placeholder
+        userAvatar: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop', // Placeholder
+        message: newMessage.trim(),
+        timestamp: new Date().toISOString(),
+        tenderId: tender.id,
+      };
+      await sendChatMessage(messageToSend);
       setNewMessage('');
     }
   };
-
-  
 
   return (
     <div className={`fixed right-0 top-0 h-full w-96  bg-white shadow-2xl transform transition-transform duration-300 z-50 ${
@@ -50,7 +54,9 @@ const ChatPanel: React.FC<ChatPanelProps> = ({
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4 h-[calc(100vh-150px)]">
-        {tenderMessages.length === 0 ? (
+        {isLoading ? (
+          <div className="text-center text-gray-500 mt-8">Loading messages...</div>
+        ) : tenderMessages.length === 0 ? (
           <div className="text-center text-gray-500 mt-8">
             <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Send className="w-8 h-8 text-gray-400" />

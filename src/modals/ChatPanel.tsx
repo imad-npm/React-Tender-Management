@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { X, Send, Paperclip, Smile } from 'lucide-react';
 import { Tender } from '../types/tender';
-import { useTenderStore } from '../store/tenderStore';
+import { useChatStore } from '../store/chatStore';
 import { ChatPanelProps } from '../types/modals';
 
 const ChatPanel: React.FC<ChatPanelProps> = ({
@@ -12,7 +12,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({
   const {
     chatMessages,
     sendMessage,
-  } = useTenderStore();
+  } = useChatStore();
 
   const [newMessage, setNewMessage] = useState('');
 

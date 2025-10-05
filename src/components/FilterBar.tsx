@@ -2,6 +2,7 @@ import React from 'react';
 import { Search, Filter, X, ChevronDown } from 'lucide-react';
 import { Filters, TenderStage, Priority } from '../types/tender';
 import NativeSelect from '../ui/NativeSelect';
+import SearchableSelect from '../ui/SearchableSelect';
 import DatePicker from '../ui/DatePicker';
 import { useFilters } from '../hooks/useFilters';
 
@@ -94,7 +95,7 @@ const FilterBar: React.FC<FilterBarProps> = (props) => {
             placeholder="All Tags"
           />
 
-          <NativeSelect
+          <SearchableSelect
             label="Responsible Member"
             options={userOptions}
             value={props.filters.users[0] || ''}

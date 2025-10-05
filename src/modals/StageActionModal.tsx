@@ -4,7 +4,7 @@ import { TenderStage } from '../types/tender';
 import { StageActionModalProps } from '../types/modals';
 import { stageConfig } from '../utils/stageConfig';
 import { useTenderStore } from '../store/tenderStore';
-import NativeSelect from '../ui/NativeSelect';
+import SearchableSelect from '../ui/SearchableSelect';
 
 const StageActionModal: React.FC<StageActionModalProps> = ({
   tender,
@@ -129,7 +129,7 @@ const StageActionModal: React.FC<StageActionModalProps> = ({
 
                         {/* Responsible Member */}
                         {!['no-go', 'reject', 'cancel'].includes(actionItem.action) && (
-                          <NativeSelect
+                          <SearchableSelect
                             label="Assign Responsible"
                             options={userOptions}
                             value={selectedUser}

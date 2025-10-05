@@ -1,7 +1,7 @@
 import { create } from 'zustand';
-import { ChatMessage, Tender, User, Filters } from '../types/tender';
+import { Tender, User } from '../types/tender';
 import { TenderState } from '../types/store';
-import { mockTenders, mockKPIData, mockChatMessages, mockUsers } from '../data/mockData';
+import { mockTenders, mockKPIData, mockUsers } from '../data/mockData';
 
 // Helper function to get unique tags
 const getAvailableTags = (tenders: Tender[]): string[] => {
@@ -14,32 +14,14 @@ const getAvailableUsers = (users: User[]): User[] => {
   return users;
 };
 
-export const useTenderStore = create<TenderState>((set, get) => ({
+export const useTenderStore = create<TenderState>((set) => ({
   // Initial State
   tenders: mockTenders,
-  chatMessages: mockChatMessages,
   kpiData: mockKPIData,
   availableTags: getAvailableTags(mockTenders),
   availableUsers: getAvailableUsers(mockUsers),
-  selectedTenderForPreview: null,
-  selectedTenderForChat: null,
-  selectedTenderForAction: null,
 
   // Actions
-  sendMessage: (tenderId, message) => {
-    const currentUser = mockUsers[0]; // Assuming first user is current user
-    const newMessage: ChatMessage = {
-      id: Date.now().toString(),
-      userId: currentUser.id,
-      userName: currentUser.name,
-      userAvatar: currentUser.avatar,
-      message,
-      timestamp: new Date().toISOString(),
-      tenderId
-    };
-    set(state => ({ chatMessages: [...state.chatMessages, newMessage] }));
-  },
-
   changeTenderStage: (tenderId, newStage, action, responsibleMember) => {
     // Update tender stage and responsible member
     set(state => ({
@@ -50,10 +32,6 @@ export const useTenderStore = create<TenderState>((set, get) => ({
       )
     }));
   },
-
-  setSelectedTenderForPreview: (tender) => set({ selectedTenderForPreview: tender }),
-  setSelectedTenderForChat: (tender) => set({ selectedTenderForChat: tender }),
-  setSelectedTenderForAction: (tender) => set({ selectedTenderForAction: tender }),
 }));
 
 

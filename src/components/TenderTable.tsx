@@ -1,30 +1,17 @@
 import React from 'react';
 import { FileText, MessageCircle, Calendar, DollarSign, Building, ArrowRight } from 'lucide-react';
 import { stageConfig, priorityConfig } from '../utils/stageConfig';
-import { useTenderStore } from '../store/tenderStore';
-import DocumentPreviewModal from '../modals/DocumentPreviewModal';
-import ChatPanel from '../modals/ChatPanel';
-import StageActionModal from '../modals/StageActionModal';
 import { formatCurrency } from '../utils/formatters';
 import CopyableReference from './CopyableReference';
 import { Tender } from '../types/tender';
 
 interface TenderTableProps {
   tenders: Tender[];
+  onOpenChat: (tender: Tender) => void;
+  onStageAction: (tender: Tender) => void;
 }
 
-const TenderTable: React.FC<TenderTableProps> = ({ tenders }) => {
-  const {
-    selectedTenderForPreview,
-    selectedTenderForChat,
-    selectedTenderForAction,
-    setSelectedTenderForPreview,
-    setSelectedTenderForChat,
-    setSelectedTenderForAction,
-  } = useTenderStore();
-
-  const onOpenChat = setSelectedTenderForChat;
-  const onStageAction = setSelectedTenderForAction;
+const TenderTable: React.FC<TenderTableProps> = ({ tenders, onOpenChat, onStageAction }) => {
 
 
   return (
@@ -167,25 +154,6 @@ const TenderTable: React.FC<TenderTableProps> = ({ tenders }) => {
           <p className="text-gray-600">Try adjusting your filters to see more results.</p>
         </div>
       )}
-
-      {/* Modals and Panels */}
-      <DocumentPreviewModal
-        tender={selectedTenderForPreview}
-        isOpen={!!selectedTenderForPreview}
-        onClose={() => setSelectedTenderForPreview(null)}
-      />
-
-      <ChatPanel
-        tender={selectedTenderForChat}
-        isOpen={!!selectedTenderForChat}
-        onClose={() => setSelectedTenderForChat(null)}
-      />
-
-      <StageActionModal
-        tender={selectedTenderForAction}
-        isOpen={!!selectedTenderForAction}
-        onClose={() => setSelectedTenderForAction(null)}
-      />
     </div>
   );
 };

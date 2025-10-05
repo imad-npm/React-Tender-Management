@@ -3,7 +3,7 @@ import { Search, Filter, X, ChevronDown } from 'lucide-react';
 import { Filters, TenderStage, Priority } from '../types/tender';
 import { stageConfig, priorityConfig } from '../utils/stageConfig';
 import { useTenderStore } from '../store/tenderStore';
-import MultiSelectFilter from '../ui/MultiSelectFilter';
+import NativeSelect from '../ui/NativeSelect';
 import DatePicker from '../ui/DatePicker';
 
 const FilterBar: React.FC = () => {
@@ -43,24 +43,16 @@ const FilterBar: React.FC = () => {
   const stageOptions = (Object.keys(stageConfig) as TenderStage[]).map(stage => ({
     value: stage,
     label: stageConfig[stage].label,
-    color: stageConfig[stage].color,
-    bgColor: stageConfig[stage].bgColor,
-    textColor: stageConfig[stage].textColor,
   }));
 
   const priorityOptions = (Object.keys(priorityConfig) as Priority[]).map(priority => ({
     value: priority,
     label: priorityConfig[priority].label,
-    color: priorityConfig[priority].color,
-    dotColor: priorityConfig[priority].dotColor,
   }));
 
   const tagOptions = availableTags.map(tag => ({
     value: tag,
     label: tag,
-    bgColor: 'bg-blue-100',
-    textColor: 'text-blue-800',
-    color: 'border-blue-200',
   }));
 
   const userOptions = availableUsers.map(user => ({
@@ -108,48 +100,50 @@ const FilterBar: React.FC = () => {
 
       {/* Advanced Filters */}
       {showAdvancedFilters && (
-        <div className="mt-6 pt-6 border-t border-gray-100 space-y-4">
-          <MultiSelectFilter
+        <div className="mt-6 pt-6 border-t border-gray-100 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <NativeSelect
             label="Stages"
             options={stageOptions}
-            selectedValues={filters.stages}
-            onChange={(values) => updateFilters('stages', values as TenderStage[])}
+            value={filters.stages[0] || ''}
+            onChange={(value) => updateFilters('stages', value ? [value as TenderStage] : [])}
+            placeholder="All Stages"
           />
 
-          <MultiSelectFilter
+          <NativeSelect
             label="Priority"
             options={priorityOptions}
-            selectedValues={filters.priorities}
-            onChange={(values) => updateFilters('priorities', values as Priority[])}
+            value={filters.priorities[0] || ''}
+            onChange={(value) => updateFilters('priorities', value ? [value as Priority] : [])}
+            placeholder="All Priorities"
           />
 
-          <MultiSelectFilter
+          <NativeSelect
             label="Tags"
             options={tagOptions}
-            selectedValues={filters.tags}
-            onChange={(values) => updateFilters('tags', values)}
+            value={filters.tags[0] || ''}
+            onChange={(value) => updateFilters('tags', value ? [value] : [])}
+            placeholder="All Tags"
           />
 
-          <MultiSelectFilter
+          <NativeSelect
             label="Responsible Member"
             options={userOptions}
-            selectedValues={filters.users}
-            onChange={(values) => updateFilters('users', values)}
+            value={filters.users[0] || ''}
+            onChange={(value) => updateFilters('users', value ? [value] : [])}
+            placeholder="All Members"
           />
 
           {/* Date Range */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <DatePicker
-              label="Start Date"
-              value={filters.dateRange.start}
-              onChange={(value) => updateFilters('dateRange', { ...filters.dateRange, start: value })}
-            />
-            <DatePicker
-              label="End Date"
-              value={filters.dateRange.end}
-              onChange={(value) => updateFilters('dateRange', { ...filters.dateRange, end: value })}
-            />
-          </div>
+          <DatePicker
+            label="Start Date"
+            value={filters.dateRange.start}
+            onChange={(value) => updateFilters('dateRange', { ...filters.dateRange, start: value })}
+          />
+          <DatePicker
+            label="End Date"
+            value={filters.dateRange.end}
+            onChange={(value) => updateFilters('dateRange', { ...filters.dateRange, end: value })}
+          />
         </div>
       )}
     </div>

@@ -1,15 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { X, ArrowRight, AlertTriangle, CheckCircle, Users } from 'lucide-react';
-import { Tender, TenderStage } from '../types/tender';
+import { TenderStage } from '../types/tender';
+import { StageActionModalProps } from '../types/modals';
 import { stageConfig } from '../utils/stageConfig';
 import { useTenderStore } from '../store/tenderStore';
 import NativeSelect from '../ui/NativeSelect';
-
-interface StageActionModalProps {
-  tender: Tender | null;
-  isOpen: boolean;
-  onClose: () => void;
-}
 
 const StageActionModal: React.FC<StageActionModalProps> = ({
   tender,

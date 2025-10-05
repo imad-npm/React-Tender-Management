@@ -1,12 +1,7 @@
 import React from 'react';
 import { X, Download, FileText, Calendar, User } from 'lucide-react';
 import { Tender } from '../types/tender';
-
-interface DocumentPreviewModalProps {
-  tender: Tender | null;
-  isOpen: boolean;
-  onClose: () => void;
-}
+import { DocumentPreviewModalProps } from '../types/modals';
 
 const DocumentPreviewModal: React.FC<DocumentPreviewModalProps> = ({
   tender,

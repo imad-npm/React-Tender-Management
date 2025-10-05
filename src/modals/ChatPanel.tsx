@@ -2,12 +2,7 @@ import React, { useState } from 'react';
 import { X, Send, Paperclip, Smile } from 'lucide-react';
 import { Tender } from '../types/tender';
 import { useTenderStore } from '../store/tenderStore';
-
-interface ChatPanelProps {
-  tender: Tender | null;
-  isOpen: boolean;
-  onClose: () => void;
-}
+import { ChatPanelProps } from '../types/modals';
 
 const ChatPanel: React.FC<ChatPanelProps> = ({
   tender,

@@ -40,46 +40,63 @@ const FilterBar: React.FC = () => {
 
   const stageOptions = Object.keys(stageConfig).map(stage => ({
     value: stage,
-    label: stageConfig[stage].label,
+    label: stageConfig[stage as TenderStage].label,
   }));
 
   const priorityOptions = Object.keys(priorityConfig).map(priority => ({
     value: priority,
-    label: priorityConfig[priority].label,
+    label: priorityConfig[priority as Priority].label,
   }));
 
   const tagOptions = availableTags.map(tag => ({ value: tag, label: tag }));
   const userOptions = availableUsers.map(user => ({ value: user.id, label: user.name }));
 
   // Collect all active filter tags for display
-  const activeTags = [
-    ...filters.stages.map(stage => ({
-      label: stageConfig[stage]?.label || stage,
+  const activeTags: { label: string; key: keyof Filters; value: string }[] = [];
+
+  filters.stages.forEach(stage => {
+    activeTags.push({
+      label: stageConfig[stage as TenderStage]?.label || stage,
       key: 'stages',
       value: stage,
-    })),
-    ...filters.priorities.map(p => ({
-      label: priorityConfig[p]?.label || p,
+    });
+  });
+
+  filters.priorities.forEach(p => {
+    activeTags.push({
+      label: priorityConfig[p as Priority]?.label || p,
       key: 'priorities',
       value: p,
-    })),
-    ...filters.tags.map(t => ({ label: t, key: 'tags', value: t })),
-    ...filters.users.map(u => ({
+    });
+  });
+
+  filters.tags.forEach(t => {
+    activeTags.push({ label: t, key: 'tags', value: t });
+  });
+
+  filters.users.forEach(u => {
+    activeTags.push({
       label: availableUsers.find(user => user.id === u)?.name || u,
       key: 'users',
       value: u,
-    })),
-    filters.dateRange.start && {
+    });
+  });
+
+  if (filters.dateRange.start) {
+    activeTags.push({
       label: `From ${filters.dateRange.start}`,
       key: 'dateRange',
       value: 'start',
-    },
-    filters.dateRange.end && {
+    });
+  }
+
+  if (filters.dateRange.end) {
+    activeTags.push({
       label: `To ${filters.dateRange.end}`,
       key: 'dateRange',
       value: 'end',
-    },
-  ].filter(Boolean);
+    });
+  }
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">

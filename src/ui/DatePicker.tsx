@@ -1,11 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-
-interface DatePickerProps {
-  label?: string;
-  value: string; // ISO YYYY-MM-DD or empty string
-  onChange: (value: string) => void;
-  placeholder?: string;
-}
+import { DatePickerProps } from '../types/ui';
 
 /* ------ Icons ------ */
 const IconCalendar = ({ className = "w-4 h-4" }: { className?: string }) => (

@@ -1,20 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ChevronDown, Check } from 'lucide-react';
-
-interface SelectOption {
-  value: string;
-  label: string;
-}
-
-interface NativeSelectProps {
-  label?: string;
-  options: SelectOption[];
-  value: string;
-  onChange: (value: string) => void;
-  placeholder?: string;
-  icon?: React.ComponentType<{ className?: string }>;
-  width?: string;
-}
+import { NativeSelectProps } from '../types/ui';
 
 const NativeSelect: React.FC<NativeSelectProps> = ({
   label,

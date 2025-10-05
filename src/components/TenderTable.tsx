@@ -1,5 +1,5 @@
 import React from 'react';
-import { Eye, FileText, MessageCircle, Calendar, DollarSign, Building, ArrowRight } from 'lucide-react';
+import { FileText, MessageCircle, Calendar, DollarSign, Building, ArrowRight } from 'lucide-react';
 import { stageConfig, priorityConfig } from '../utils/stageConfig';
 import { useTenderStore, useFilteredTenders } from '../store/tenderStore';
 import DocumentPreviewModal from '../modals/DocumentPreviewModal';
@@ -18,7 +18,6 @@ const TenderTable: React.FC = () => {
   } = useTenderStore();
   const tenders = useFilteredTenders();
 
-  const onDocumentPreview = setSelectedTenderForPreview;
   const onOpenChat = setSelectedTenderForChat;
   const onStageAction = setSelectedTenderForAction;
 

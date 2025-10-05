@@ -54,7 +54,7 @@ const FilterBar: React.FC<FilterBarProps> = ({ filters, onFiltersChange, availab
   }));
 
   const tagOptions = availableTags.map(tag => ({ value: tag, label: tag }));
-  const userOptions = availableUsers.map(user => ({ value: user.id, label: user.name }));
+  const userOptions = availableUsers;
 
   // Collect all active filter tags for display
   const activeTags: { label: string; key: keyof Filters; value: string }[] = [];
@@ -81,7 +81,7 @@ const FilterBar: React.FC<FilterBarProps> = ({ filters, onFiltersChange, availab
 
   filters.users.forEach(u => {
     activeTags.push({
-      label: availableUsers.find(user => user.id === u)?.name || u,
+      label: availableUsers.find(user => user.value === u)?.label || u,
       key: 'users',
       value: u,
     });

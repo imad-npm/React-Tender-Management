@@ -1,9 +1,18 @@
 import React from 'react';
 import { TrendingUp, FileText, Trophy, DollarSign, Target, Clock } from 'lucide-react';
-import { useTenderStore } from '../store/tenderStore';
+import { useGetKPIDataQuery } from '../services/kpiApi'; // New import
 
 const KPICards: React.FC = () => {
-  const { kpiData } = useTenderStore();
+  const { data: kpiData, isLoading, error } = useGetKPIDataQuery();
+
+  if (isLoading) {
+    return <div>Loading KPI data...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading KPI data.</div>;
+  }
+
   const data = kpiData; // for consistency with the old code
 
   const kpiCards = [

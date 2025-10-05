@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
 import FilterBar from '../components/FilterBar';
 import TenderTable from '../components/TenderTable';
-import { useTenderStore } from '../store/tenderStore';
 import { useFilteredTenders } from '../hooks/useFilteredTenders';
 import { Filters, Tender } from '../types/tender';
 import DocumentPreviewModal from '../modals/DocumentPreviewModal';
 import ChatPanel from '../modals/ChatPanel';
 import StageActionModal from '../modals/StageActionModal';
+import { useGetAvailableTagsQuery } from '../services/tagApi'; // New import
+import { useGetUsersQuery } from '../services/userApi';     // New import
 
 const TenderListPage = () => {
-  const {
-    availableTags,
-    availableUsers,
-  } = useTenderStore();
+  const { data: availableTags = [], isLoading: isLoadingTags } = useGetAvailableTagsQuery();
+  const { data: availableUsers = [], isLoading: isLoadingUsers } = useGetUsersQuery();
 
   const [filters, setFilters] = useState<Filters>({
     search: '',
@@ -28,6 +27,10 @@ const TenderListPage = () => {
   const [selectedTenderForAction, setSelectedTenderForAction] = useState<Tender | null>(null);
 
   const filteredTenders = useFilteredTenders(filters);
+
+  if (isLoadingTags || isLoadingUsers) {
+    return <div>Loading filters...</div>; // Basic loading state
+  }
 
   return (
     <>

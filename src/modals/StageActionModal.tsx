@@ -3,7 +3,8 @@ import { X, ArrowRight, AlertTriangle, CheckCircle, Users } from 'lucide-react';
 import { TenderStage } from '../types/tender';
 import { StageActionModalProps } from '../types/modals';
 import { stageConfig } from '../utils/stageConfig';
-import { useTenderStore } from '../store/tenderStore';
+import { useUpdateTenderMutation } from '../services/tenderApi'; // Keep this import
+import { useGetUsersQuery } from '../services/userApi'; // New import
 import SearchableSelect from '../ui/SearchableSelect';
 
 const StageActionModal: React.FC<StageActionModalProps> = ({
@@ -11,9 +12,10 @@ const StageActionModal: React.FC<StageActionModalProps> = ({
   isOpen,
   onClose,
 }) => {
-  const { changeTenderStage, availableUsers } = useTenderStore();
+  const [updateTender, { isLoading: isUpdatingStage }] = useUpdateTenderMutation();
+  const { data: availableUsers = [] } = useGetUsersQuery();
+
   const [selectedAction, setSelectedAction] = useState<string>('');
-  const [isProcessing, setIsProcessing] = useState(false);
   const [selectedUser, setSelectedUser] = useState<string>('');
 
   useEffect(() => {
@@ -33,19 +35,23 @@ const StageActionModal: React.FC<StageActionModalProps> = ({
       return;
     }
 
-    setIsProcessing(true);
     setSelectedAction(action);
-
-    // Simulate API call
 
     const responsibleUser = availableUsers.find(u => u.id === selectedUser);
     if (responsibleUser) {
-      changeTenderStage(tender.id, nextStage, action, responsibleUser);
+      try {
+        await updateTender({
+          id: tender.id,
+          stage: nextStage,
+          responsibleMember: responsibleUser,
+        }).unwrap();
+        onClose();
+      } catch (error) {
+        console.error('Failed to update tender:', error);
+        alert('Failed to update tender stage.');
+      }
     }
-
-    setIsProcessing(false);
     setSelectedAction('');
-    onClose();
   };
 
   const getActionDescription = (nextStage: TenderStage) => {
@@ -158,10 +164,10 @@ const StageActionModal: React.FC<StageActionModalProps> = ({
                         onClick={() =>
                           handleAction(actionItem.action, actionItem.nextStage)
                         }
-                        disabled={isProcessing || !selectedUser}
+                        disabled={isUpdatingStage || !selectedUser}
                         className={`mt-4 w-full px-4 py-2 rounded-lg text-white font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${actionItem.color}`}
                       >
-                        {isProcessing && selectedAction === actionItem.action ? (
+                        {isUpdatingStage && selectedAction === actionItem.action ? (
                           <div className="flex items-center justify-center gap-2">
                             <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                             Processing...

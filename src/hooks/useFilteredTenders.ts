@@ -1,9 +1,13 @@
-import { useTenderStore } from '../store/tenderStore';
+import { useGetTendersQuery } from '../services/tenderApi';
 import { Filters } from '../types/tender';
 
 // Selector for filtered tenders
 export const useFilteredTenders = (filters: Filters) => {
-  const { tenders } = useTenderStore();
+  const { data: tenders = [], isLoading } = useGetTendersQuery();
+
+  if (isLoading) {
+    return []; // Return empty array while loading
+  }
 
   return tenders.filter(tender => {
     if (filters.search) {

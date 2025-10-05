@@ -1,9 +1,9 @@
 import React from 'react';
 import { Search, Filter, X, ChevronDown } from 'lucide-react';
 import { Filters, TenderStage, Priority } from '../types/tender';
-import { stageConfig, priorityConfig } from '../utils/stageConfig';
 import NativeSelect from '../ui/NativeSelect';
 import DatePicker from '../ui/DatePicker';
+import { useFilters } from '../hooks/useFilters';
 
 interface FilterBarProps {
   filters: Filters;
@@ -12,96 +12,19 @@ interface FilterBarProps {
   availableUsers: { value: string; label: string }[];
 }
 
-const FilterBar: React.FC<FilterBarProps> = ({ filters, onFiltersChange, availableTags, availableUsers }) => {
+const FilterBar: React.FC<FilterBarProps> = (props) => {
   const [showAdvancedFilters, setShowAdvancedFilters] = React.useState(false);
-
-  const updateFilters = (key: keyof Filters, value: any) => {
-    onFiltersChange({ ...filters, [key]: value });
-  };
-
-  const clearFilters = () => {
-    onFiltersChange({
-      search: '',
-      stages: [],
-      users: [],
-      priorities: [],
-      tags: [],
-      dateRange: { start: '', end: '' },
-    });
-  };
-
-  const clearSingleFilter = (key: keyof Filters) => {
-    updateFilters(key, key === 'dateRange' ? { start: '', end: '' } : []);
-  };
-
-  const hasActiveFilters =
-    filters.search ||
-    filters.stages.length ||
-    filters.users.length ||
-    filters.priorities.length ||
-    filters.tags.length ||
-    filters.dateRange.start ||
-    filters.dateRange.end;
-
-  const stageOptions = Object.keys(stageConfig).map(stage => ({
-    value: stage,
-    label: stageConfig[stage as TenderStage].label,
-  }));
-
-  const priorityOptions = Object.keys(priorityConfig).map(priority => ({
-    value: priority,
-    label: priorityConfig[priority as Priority].label,
-  }));
-
-  const tagOptions = availableTags.map(tag => ({ value: tag, label: tag }));
-  const userOptions = availableUsers;
-
-  // Collect all active filter tags for display
-  const activeTags: { label: string; key: keyof Filters; value: string }[] = [];
-
-  filters.stages.forEach(stage => {
-    activeTags.push({
-      label: stageConfig[stage as TenderStage]?.label || stage,
-      key: 'stages',
-      value: stage,
-    });
-  });
-
-  filters.priorities.forEach(p => {
-    activeTags.push({
-      label: priorityConfig[p as Priority]?.label || p,
-      key: 'priorities',
-      value: p,
-    });
-  });
-
-  filters.tags.forEach(t => {
-    activeTags.push({ label: t, key: 'tags', value: t });
-  });
-
-  filters.users.forEach(u => {
-    activeTags.push({
-      label: availableUsers.find(user => user.value === u)?.label || u,
-      key: 'users',
-      value: u,
-    });
-  });
-
-  if (filters.dateRange.start) {
-    activeTags.push({
-      label: `From ${filters.dateRange.start}`,
-      key: 'dateRange',
-      value: 'start',
-    });
-  }
-
-  if (filters.dateRange.end) {
-    activeTags.push({
-      label: `To ${filters.dateRange.end}`,
-      key: 'dateRange',
-      value: 'end',
-    });
-  }
+  const {
+    updateFilters,
+    clearFilters,
+    clearSingleFilter,
+    hasActiveFilters,
+    activeTags,
+    stageOptions,
+    priorityOptions,
+    tagOptions,
+    userOptions,
+  } = useFilters(props);
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
@@ -114,7 +37,7 @@ const FilterBar: React.FC<FilterBarProps> = ({ filters, onFiltersChange, availab
             type="text"
             placeholder="Search by tender name, reference number, or agency..."
             className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-            value={filters.search}
+            value={props.filters.search}
             onChange={e => updateFilters('search', e.target.value)}
           />
         </div>
@@ -146,11 +69,11 @@ const FilterBar: React.FC<FilterBarProps> = ({ filters, onFiltersChange, availab
 
       {/* Advanced Filters */}
       {showAdvancedFilters && (
-        <div className="mt-6 pt-6 border-t border-gray-100 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="mt-6 pt-6 border-t border-gray-100 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <NativeSelect
             label="Stage"
             options={stageOptions}
-            value={filters.stages[0] || ''}
+            value={props.filters.stages[0] || ''}
             onChange={value => updateFilters('stages', value ? [value as TenderStage] : [])}
             placeholder="All Stages"
           />
@@ -158,7 +81,7 @@ const FilterBar: React.FC<FilterBarProps> = ({ filters, onFiltersChange, availab
           <NativeSelect
             label="Priority"
             options={priorityOptions}
-            value={filters.priorities[0] || ''}
+            value={props.filters.priorities[0] || ''}
             onChange={value => updateFilters('priorities', value ? [value as Priority] : [])}
             placeholder="All Priorities"
           />
@@ -166,7 +89,7 @@ const FilterBar: React.FC<FilterBarProps> = ({ filters, onFiltersChange, availab
           <NativeSelect
             label="Tag"
             options={tagOptions}
-            value={filters.tags[0] || ''}
+            value={props.filters.tags[0] || ''}
             onChange={value => updateFilters('tags', value ? [value] : [])}
             placeholder="All Tags"
           />
@@ -174,20 +97,20 @@ const FilterBar: React.FC<FilterBarProps> = ({ filters, onFiltersChange, availab
           <NativeSelect
             label="Responsible Member"
             options={userOptions}
-            value={filters.users[0] || ''}
+            value={props.filters.users[0] || ''}
             onChange={value => updateFilters('users', value ? [value] : [])}
             placeholder="All Members"
           />
 
           <DatePicker
             label="Start Date"
-            value={filters.dateRange.start}
-            onChange={value => updateFilters('dateRange', { ...filters.dateRange, start: value })}
+            value={props.filters.dateRange.start}
+            onChange={value => updateFilters('dateRange', { ...props.filters.dateRange, start: value })}
           />
           <DatePicker
             label="End Date"
-            value={filters.dateRange.end}
-            onChange={value => updateFilters('dateRange', { ...filters.dateRange, end: value })}
+            value={props.filters.dateRange.end}
+            onChange={value => updateFilters('dateRange', { ...props.filters.dateRange, end: value })}
           />
         </div>
       )}

@@ -103,7 +103,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({
             </button>
             <button
               onClick={handleSend}
-              className="p-2 bg-cyan-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="p-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={!newMessage.trim()}
             >
               <Send className="w-4 h-4" />

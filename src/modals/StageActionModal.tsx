@@ -35,10 +35,10 @@ const StageActionModal: React.FC<StageActionModalProps> = ({
 
     setIsProcessing(true);
     setSelectedAction(action);
-    
+
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
-    
+
     const responsibleUser = availableUsers.find(u => u.id === selectedUser);
     if (responsibleUser) {
       changeTenderStage(tender.id, nextStage, action, responsibleUser);
@@ -61,7 +61,7 @@ const StageActionModal: React.FC<StageActionModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center py-5 z-50">
-      <div className="bg-white rounded-2xl shadow-2xl w-full overflow-scroll max-w-md">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
           <div>
@@ -81,7 +81,9 @@ const StageActionModal: React.FC<StageActionModalProps> = ({
           {/* Current Stage */}
           <div className="mb-6">
             <h3 className="text-sm font-medium text-gray-700 mb-2">Current Stage</h3>
-            <div className={`inline-flex items-center gap-2 px-3 py-2 rounded-full text-sm font-medium border ${currentStageConfig.color} ${currentStageConfig.bgColor} ${currentStageConfig.textColor}`}>
+            <div
+              className={`inline-flex items-center gap-2 px-3 py-2 rounded-full text-sm font-medium border ${currentStageConfig.color} ${currentStageConfig.bgColor} ${currentStageConfig.textColor}`}
+            >
               <currentStageConfig.icon className="w-4 h-4" />
               {currentStageConfig.label}
             </div>
@@ -89,70 +91,90 @@ const StageActionModal: React.FC<StageActionModalProps> = ({
 
           {/* Available Actions */}
           {availableActions.length > 0 ? (
-            <div className="space-y-3">
-              <h3 className="text-sm font-medium text-gray-700">Available Actions</h3>
-              {availableActions.map((actionItem) => {
-                const nextStageConfig = stageConfig[actionItem.nextStage];
-                const ActionIcon = actionItem.icon;
-                
-                return (
-                  <div key={actionItem.action} className="border border-gray-200 rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-2">
-                        <ActionIcon className={`w-4 h-4 ${actionItem.iconColor}`} />
-                        <span className="font-medium text-gray-900">{actionItem.label}</span>
-                      </div>
-                      <ArrowRight className="w-4 h-4 text-gray-400" />
-                    </div>
-                    
-                    <div className="flex items-center gap-2 mb-3">
-                      <span className="text-sm text-gray-600">Next stage:</span>
-                      <div className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium border ${nextStageConfig.color} ${nextStageConfig.bgColor} ${nextStageConfig.textColor}`}>
-                        <nextStageConfig.icon className="w-3 h-3" />
-                        {nextStageConfig.label}
-                      </div>
-                    </div>
-                          {/* Responsible Member Selection */}
-                          {(! ["no-go","reject","cancel"].includes(actionItem.action)) &&
-          <div className="mb-6">
-            <NativeSelect
-              label="Assign Responsible Member"
-              options={userOptions}
-              value={selectedUser}
-              onChange={setSelectedUser}
-              placeholder="Select a user"
-              icon={Users}
-            />
-          </div>
-              }
-                    <p className="text-sm text-gray-600 mb-3">
-                      {getActionDescription(actionItem.nextStage)}
-                    </p>
+            <div>
+              <h3 className="text-sm font-medium text-gray-700 mb-3">Available Actions</h3>
 
-                    {actionItem.isDestructive && (
-                      <div className="flex items-center gap-2 p-2 bg-red-50 rounded-md mb-3">
-                        <AlertTriangle className="w-4 h-4 text-red-600" />
-                        <span className="text-sm text-red-700">This action cannot be undone</span>
-                      </div>
-                    )}
+              {/* Grid layout */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+                {availableActions.map((actionItem) => {
+                  const nextStageConfig = stageConfig[actionItem.nextStage];
+                  const ActionIcon = actionItem.icon;
 
-                    <button
-                      onClick={() => handleAction(actionItem.action, actionItem.nextStage)}
-                      disabled={isProcessing || !selectedUser}
-                      className={`w-full px-4 py-2 rounded-lg text-white font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${actionItem.color}`}
+                  return (
+                    <div
+                      key={actionItem.action}
+                      className="border border-gray-200 rounded-xl p-4 flex flex-col justify-between shadow-sm hover:shadow-md transition-all duration-200"
                     >
-                      {isProcessing && selectedAction === actionItem.action ? (
-                        <div className="flex items-center justify-center gap-2">
-                          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                          Processing...
+                      {/* Header */}
+                      <div>
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <ActionIcon className={`w-4 h-4 ${actionItem.iconColor}`} />
+                            <span className="font-medium text-gray-900">
+                              {actionItem.label}
+                            </span>
+                          </div>
+                          <ArrowRight className="w-4 h-4 text-gray-400" />
                         </div>
-                      ) : (
-                        actionItem.label
-                      )}
-                    </button>
-                  </div>
-                );
-              })}
+
+                        {/* Next Stage */}
+                        <div className="flex items-center gap-2 mb-3">
+                          <span className="text-xs text-gray-600">Next stage:</span>
+                          <div
+                            className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium border ${nextStageConfig.color} ${nextStageConfig.bgColor} ${nextStageConfig.textColor}`}
+                          >
+                            <nextStageConfig.icon className="w-3 h-3" />
+                            {nextStageConfig.label}
+                          </div>
+                        </div>
+
+                        {/* Responsible Member */}
+                        {!['no-go', 'reject', 'cancel'].includes(actionItem.action) && (
+                          <NativeSelect
+                            label="Assign Responsible"
+                            options={userOptions}
+                            value={selectedUser}
+                            onChange={setSelectedUser}
+                            placeholder="Select a user"
+                            icon={Users}
+                          />
+                        )}
+
+                        <p className="text-xs text-gray-600 mt-2">
+                          {getActionDescription(actionItem.nextStage)}
+                        </p>
+
+                        {actionItem.isDestructive && (
+                          <div className="flex items-center gap-2 p-2 bg-red-50 rounded-md mt-3">
+                            <AlertTriangle className="w-4 h-4 text-red-600" />
+                            <span className="text-xs text-red-700">
+                              This action cannot be undone
+                            </span>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Footer (button) */}
+                      <button
+                        onClick={() =>
+                          handleAction(actionItem.action, actionItem.nextStage)
+                        }
+                        disabled={isProcessing || !selectedUser}
+                        className={`mt-4 w-full px-4 py-2 rounded-lg text-white font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${actionItem.color}`}
+                      >
+                        {isProcessing && selectedAction === actionItem.action ? (
+                          <div className="flex items-center justify-center gap-2">
+                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                            Processing...
+                          </div>
+                        ) : (
+                          actionItem.label
+                        )}
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           ) : (
             <div className="text-center py-8">
@@ -160,7 +182,9 @@ const StageActionModal: React.FC<StageActionModalProps> = ({
                 <CheckCircle className="w-8 h-8 text-gray-400" />
               </div>
               <h3 className="text-lg font-medium text-gray-900 mb-2">No Actions Available</h3>
-              <p className="text-gray-600">This tender is in a final stage with no further actions required.</p>
+              <p className="text-gray-600">
+                This tender is in a final stage with no further actions required.
+              </p>
             </div>
           )}
         </div>
@@ -170,4 +194,3 @@ const StageActionModal: React.FC<StageActionModalProps> = ({
 };
 
 export default StageActionModal;
-

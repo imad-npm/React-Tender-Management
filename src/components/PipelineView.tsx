@@ -17,35 +17,34 @@ const PipelineView: React.FC = () => {
             key={stage}
             className={`bg-white rounded-xl p-6 shadow-sm border-l-4 ${stageInfo.color} hover:shadow-md transition-shadow duration-200`}
           >
-            <div className="flex items-center mb-4">
+            <div className="flex justify-between items-center mb-4">
               <div className={`px-3 py-1 rounded-full ${stageInfo.bgColor}`}>
-                <p className={`text-2xl font-bold ${stageInfo.textColor}`}> {index + 1}</p>
+                <p className={`text-3xl font-bold ${stageInfo.textColor}`}>{index + 1}</p>
               </div>
-              <div className="ml-4">
-                <h3 className="text-lg font-semibold text-gray-900">{stageInfo.label}</h3>
-                <stageInfo.icon className={`w-6 h-6 ${stageInfo.textColor}`} />
-              </div>
+              <stageInfo.icon className={`w-6 h-6 ${stageInfo.textColor}`} />
+            </div>
+            <div>
+              <h3 className="text-xl mb-2 font-semibold text-gray-900">{stageInfo.label}</h3>
             </div>
             <p className="text-sm text-gray-500">{stageInfo.description}</p>
           </div>
         );
       })}
+
       {/* Won / Lost Card */}
       <div
         className={`bg-white rounded-xl p-6 shadow-sm border-l-4 border-gray-300 hover:shadow-md transition-shadow duration-200`}
       >
-        <div className="flex items-center mb-4">
-          <div className={`px-3 py-1 rounded-full bg-gray-100`}>
-            <p className={`text-2xl font-bold text-gray-600`}> {pipelineStageOrder.length + 1}</p>
+        <div className="flex justify-between items-center mb-4">
+          <div className="px-3 py-1 rounded-full bg-gray-100">
+            <p className="text-3xl font-bold text-gray-600">{pipelineStageOrder.length + 1}</p>
           </div>
-          <div className="ml-4">
-            <h3 className="text-lg font-semibold text-gray-900">Won / Lost</h3>
-            <div className="flex justify-between">
-              <Trophy className={`w-6 h-6 text-green-600`} />
-              <XCircle className={`w-6 h-6 text-red-600`} />
-            </div>
+          <div className="flex gap-2">
+            <Trophy className="w-6 h-6 text-green-600" />
+            <XCircle className="w-6 h-6 text-red-600" />
           </div>
         </div>
+        <h3 className="text-xl mb-2 font-semibold text-gray-900">Won / Lost</h3>
         <p className="text-sm text-gray-500">Tenders that have been won or lost.</p>
       </div>
     </div>

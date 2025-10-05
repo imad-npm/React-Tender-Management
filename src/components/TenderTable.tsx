@@ -41,7 +41,7 @@ const TenderTable: React.FC<TenderTableProps> = ({ tenders, onOpenChat, onStageA
                   <td className="py-4 px-6">
                     <div className="space-y-2">
                       <h3 className="font-semibold text-gray-900 text-base">{tender.tenderName}</h3>
-                      <div className="flex flex-col gap-2 text-sm text-gray-600">
+                      <div className="flex flex-col gap-1 text-sm text-gray-600">
                         <div className="flex items-center gap-1">
                           <Building className="w-4 h-4" />
                           <span>{tender.agencyName}</span>

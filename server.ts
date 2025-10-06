@@ -81,6 +81,31 @@ const server = createServer((req: IncomingMessage, res: ServerResponse) => {
     const messages = mockChatMessages.filter(m => m.tenderId === tenderId);
     return sendJSON(res, messages);
   }
+  if (pathname?.startsWith('/api/tenders/') && req.method === 'PUT') {
+  const id = pathname.split('/').pop();
+  let body = '';
+
+  req.on('data', chunk => {
+    body += chunk.toString();
+  });
+
+  req.on('end', () => {
+    try {
+      const updateData = JSON.parse(body);
+      const index = mockTenders.findIndex(t => t.id === id);
+
+      if (index === -1) return sendJSON(res, { message: 'Tender not found' }, 404);
+
+      // Merge update data
+      mockTenders[index] = { ...mockTenders[index], ...updateData };
+      sendJSON(res, mockTenders[index], 200);
+    } catch (error) {
+      sendJSON(res, { message: 'Invalid JSON' }, 400);
+    }
+  });
+  return;
+}
+
 
   // KPIs
   if (pathname === '/api/kpis' && req.method === 'GET') {
@@ -90,6 +115,7 @@ const server = createServer((req: IncomingMessage, res: ServerResponse) => {
   // Fallback 404
   sendJSON(res, { message: 'Not Found' }, 404);
 });
+
 
 // Start server
 server.listen(PORT, () => {

@@ -21,8 +21,8 @@ export const tenderApi = createApi({
     }),
     updateTender: builder.mutation<Tender, { id: string; stage?: TenderStage; responsibleMember?: User }>({
       query: ({ id, ...patch }) => ({
-        url: `api/tenders/${id}`,
-        method: 'PATCH',
+        url: `tenders/${id}`,
+        method: 'PUT',
         body: patch,
       }),
       invalidatesTags: (result, error, { id }) => [

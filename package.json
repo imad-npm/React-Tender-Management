@@ -7,8 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-      "serve:api": "npx ts-node --esm server.ts"
-,
+    "serve:api": "npx ts-node --esm server.ts",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.app.json"
   },

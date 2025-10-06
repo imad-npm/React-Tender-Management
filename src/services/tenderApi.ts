@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { Tender, User, TenderStage } from '../types/tender';
+import { Tender, User, TenderStage, Priority } from '../types/tender';
 
 // Define API tags for caching
 enum ApiTag {
@@ -19,7 +19,7 @@ export const tenderApi = createApi({
       query: (id) => ({ url: `tenders/${id}`, method: 'GET' }),
       providesTags: (result, error, id) => [{ type: ApiTag.Tender, id }],
     }),
-    updateTender: builder.mutation<Tender, { id: string; stage?: TenderStage; responsibleMember?: User }>({
+    updateTender: builder.mutation<Tender, { id: string; stage?: TenderStage; responsibleMember?: User; priority?: Priority; tags?: string[] }>({
       query: ({ id, ...patch }) => ({
         url: `tenders/${id}`,
         method: 'PUT',

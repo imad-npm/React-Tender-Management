@@ -4,6 +4,9 @@ import { stageConfig, priorityConfig } from '../utils/stageConfig';
 import { formatCurrency } from '../utils/formatters';
 import CopyableReference from './CopyableReference';
 import { Tender } from '../types/tender';
+import PriorityEditor from './inline-editors/PriorityEditor';
+import TagsEditor from './inline-editors/TagsEditor';
+import ResponsibleEditor from './inline-editors/ResponsibleEditor';
 
 interface TenderTableProps {
   tenders: Tender[];
@@ -31,7 +34,6 @@ const TenderTable: React.FC<TenderTableProps> = ({ tenders, onOpenChat, onStageA
           <tbody className="divide-y divide-gray-100">
             {tenders.map((tender) => {
               const stageInfo = stageConfig[tender.stage];
-              const priorityInfo = priorityConfig[tender.priority];
               const StageIcon = stageInfo.icon;
               const availableActionsCount = stageInfo.actions.length;
 
@@ -79,43 +81,17 @@ const TenderTable: React.FC<TenderTableProps> = ({ tenders, onOpenChat, onStageA
 
                   {/* Priority */}
                   <td className="py-4 px-6">
-                    <div className={`inline-flex items-center gap-2 px-3 py-2 rounded-full text-sm font-medium border ${priorityInfo.color}`}>
-                      <div className={`w-2 h-2 rounded-full ${priorityInfo.dotColor}`}></div>
-                      {priorityInfo.label}
-                    </div>
+                    <PriorityEditor tenderId={tender.id} currentPriority={tender.priority} />
                   </td>
 
                   {/* Tags */}
                   <td className="py-4 px-6">
-                    <div className="flex flex-wrap gap-1">
-                      {tender.tags.slice(0, 2).map((tag) => (
-                        <span
-                          key={tag}
-                          className="inline-block px-2 py-1 text-xs font-medium bg-gray-100 text-gray-700 rounded-md"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                      {tender.tags.length > 2 && (
-                        <span className="inline-block px-2 py-1 text-xs font-medium bg-gray-100 text-gray-500 rounded-md">
-                          +{tender.tags.length - 2}
-                        </span>
-                      )}
-                    </div>
+                    <TagsEditor tenderId={tender.id} currentTags={tender.tags} />
                   </td>
 
                   {/* Responsible Member */}
                   <td className="py-4 px-6">
-                    <div className="flex items-center gap-2">
-                      <img
-                        src={tender.responsibleMember.avatar}
-                        alt={tender.responsibleMember.name}
-                        className="w-8 h-8 rounded-full object-cover"
-                      />
-                      <div>
-                        <p className="text-sm font-medium text-gray-900">{tender.responsibleMember.name}</p>
-                      </div>
-                    </div>
+                    <ResponsibleEditor tenderId={tender.id} currentResponsible={tender.responsibleMember} />
                   </td>
 
                   {/* Actions */}

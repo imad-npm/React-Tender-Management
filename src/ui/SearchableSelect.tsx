@@ -73,8 +73,8 @@ const SearchableSelect: React.FC<NativeSelectProps> = ({
       {/* Dropdown list */}
       {open && (
         <div
-          className="absolute top-16 z-20 mt-2 w-full rounded-xl border border-gray-100 dark:border-gray-700 
-          bg-white dark:bg-gray-900 shadow-lg overflow-y-auto max-h-60 animate-in fade-in slide-in-from-top-2 duration-150"
+          className={`absolute ${label ? 'top-16' : 'top-10'} z-20 mt-2 w-full rounded-xl border border-gray-100 dark:border-gray-700 
+          bg-white dark:bg-gray-900 shadow-lg overflow-y-auto max-h-60 animate-in fade-in slide-in-from-top-2 duration-150`}
         >
           <div className="p-2">
             <div className="relative">

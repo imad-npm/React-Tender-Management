@@ -36,6 +36,15 @@ export const useFilteredTenders = (filters: Filters) => {
     if (filters.dateRange.end && new Date(tender.createdAt) > new Date(filters.dateRange.end)) {
       return false;
     }
+
+    // Filter by archived status
+    if (!filters.isArchived && tender.isArchived) {
+      return false;
+    }
+    if (filters.isArchived && !tender.isArchived) {
+      return false;
+    }
+
     return true;
   });
 };

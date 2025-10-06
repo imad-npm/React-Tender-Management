@@ -12,6 +12,7 @@ export interface Tender {
   documents: Document[];
   createdAt: string;
   updatedAt: string;
+  isArchived: boolean;
 }
 
 export interface User {
@@ -65,6 +66,7 @@ export interface Filters {
     start: string;
     end: string;
   };
+  isArchived: boolean;
 }
 
 export interface KPIData {

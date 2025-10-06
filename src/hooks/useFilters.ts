@@ -22,11 +22,18 @@ export const useFilters = ({ filters, onFiltersChange, availableTags, availableU
       priorities: [],
       tags: [],
       dateRange: { start: '', end: '' },
+      isArchived: false,
     });
   };
 
   const clearSingleFilter = (key: keyof Filters) => {
-    updateFilters(key, key === 'dateRange' ? { start: '', end: '' } : []);
+    if (key === 'dateRange') {
+      updateFilters(key, { start: '', end: '' });
+    } else if (key === 'isArchived') {
+      updateFilters(key, false);
+    } else {
+      updateFilters(key, []);
+    }
   };
 
   const hasActiveFilters =
@@ -36,7 +43,8 @@ export const useFilters = ({ filters, onFiltersChange, availableTags, availableU
     filters.priorities.length ||
     filters.tags.length ||
     filters.dateRange.start ||
-    filters.dateRange.end;
+    filters.dateRange.end ||
+    filters.isArchived;
 
   const stageOptions = Object.keys(stageConfig).map(stage => ({
     value: stage,
@@ -94,6 +102,14 @@ export const useFilters = ({ filters, onFiltersChange, availableTags, availableU
       label: `To ${filters.dateRange.end}`,
       key: 'dateRange',
       value: 'end',
+    });
+  }
+
+  if (filters.isArchived) {
+    activeTags.push({
+      label: 'Archived Tenders',
+      key: 'isArchived',
+      value: 'true',
     });
   }
 

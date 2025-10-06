@@ -19,7 +19,7 @@ export const tenderApi = createApi({
       query: (id) => ({ url: `tenders/${id}`, method: 'GET' }),
       providesTags: (result, error, id) => [{ type: ApiTag.Tender, id }],
     }),
-    updateTender: builder.mutation<Tender, { id: string; stage?: TenderStage; responsibleMember?: User; priority?: Priority; tags?: string[] }>({
+    updateTender: builder.mutation<Tender, { id: string; stage?: TenderStage; responsibleMember?: User; priority?: Priority; tags?: string[]; isArchived?: boolean }>({
       query: ({ id, ...patch }) => ({
         url: `tenders/${id}`,
         method: 'PUT',

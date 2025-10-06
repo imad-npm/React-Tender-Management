@@ -4,6 +4,7 @@ import { Filters, TenderStage, Priority } from '../types/tender';
 import NativeSelect from '../ui/NativeSelect';
 import SearchableSelect from '../ui/SearchableSelect';
 import DatePicker from '../ui/DatePicker';
+import ToggleSwitch from '../ui/ToggleSwitch';
 import { useFilters } from '../hooks/useFilters';
 
 interface FilterBarProps {
@@ -112,6 +113,12 @@ const FilterBar: React.FC<FilterBarProps> = (props) => {
             label="End Date"
             value={props.filters.dateRange.end}
             onChange={value => updateFilters('dateRange', { ...props.filters.dateRange, end: value })}
+          />
+
+          <ToggleSwitch
+            label="Show Archived"
+            checked={props.filters.isArchived}
+            onChange={value => updateFilters('isArchived', value)}
           />
         </div>
       )}

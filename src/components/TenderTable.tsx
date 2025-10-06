@@ -1,5 +1,5 @@
 import React from 'react';
-import { FileText, MessageCircle, Calendar, DollarSign, Building, ArrowRight } from 'lucide-react';
+import { FileText, MessageCircle, Calendar, DollarSign, Building, ArrowRight, Archive } from 'lucide-react';
 import { stageConfig, priorityConfig } from '../utils/stageConfig';
 import { formatCurrency } from '../utils/formatters';
 import CopyableReference from './CopyableReference';
@@ -7,6 +7,7 @@ import { Tender } from '../types/tender';
 import PriorityEditor from './inline-editors/PriorityEditor';
 import TagsEditor from './inline-editors/TagsEditor';
 import ResponsibleEditor from './inline-editors/ResponsibleEditor';
+import { useUpdateTenderMutation } from '../services/tenderApi';
 
 interface TenderTableProps {
   tenders: Tender[];
@@ -15,7 +16,11 @@ interface TenderTableProps {
 }
 
 const TenderTable: React.FC<TenderTableProps> = ({ tenders, onOpenChat, onStageAction }) => {
+  const [updateTender] = useUpdateTenderMutation();
 
+  const handleArchive = (tender: Tender) => {
+    updateTender({ id: tender.id, isArchived: !tender.isArchived });
+  };
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
@@ -97,7 +102,13 @@ const TenderTable: React.FC<TenderTableProps> = ({ tenders, onOpenChat, onStageA
                   {/* Actions */}
                   <td className="py-4 px-6">
                     <div className="flex items-center justify-center gap-2">
-                     
+                      <button
+                        onClick={() => handleArchive(tender)}
+                        className="p-2 text-gray-600 hover:text-yellow-600 hover:bg-yellow-50 rounded-lg transition-colors"
+                        title={tender.isArchived ? 'Unarchive' : 'Archive'}
+                      >
+                        <Archive className="w-4 h-4" />
+                      </button>
                       <button
                         onClick={() => onOpenChat(tender)}
                         className="p-2 text-gray-600 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
